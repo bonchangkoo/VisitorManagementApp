@@ -12,10 +12,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: appTitle,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.red[600],
+        accentColor: Colors.white,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text(appTitle),
-          backgroundColor: Colors.red[600],
+          leading: Icon(Icons.device_hub),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+
+              },
+            ),
+            IconButton(
+                icon: Icon(Icons.arrow_forward_ios),
+                onPressed: () {
+
+                },
+            )
+          ],
         ),
         body: MyCustomForm(),
       ),
