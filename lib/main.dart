@@ -20,20 +20,6 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text(appTitle),
           leading: Icon(Icons.device_hub),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-
-              },
-            ),
-            IconButton(
-                icon: Icon(Icons.arrow_forward_ios),
-                onPressed: () {
-
-                },
-            )
-          ],
         ),
         body: MyCustomForm(),
       ),
@@ -68,71 +54,109 @@ class MyCustomFormState extends State<MyCustomForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-              child: TextFormField(
-                initialValue:
-                    new DateFormat("yyyy-MM-dd").format(new DateTime.now()),
-                decoration: InputDecoration(
-                  labelText: "방문 일자",
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+            child: Row(children: <Widget>[
+              Container(
+                width: 100,
+                child: Text("방문 일자"),
+              ),
+              Container(
+                width: 200,
+                child: TextFormField(
+                  initialValue:
+                      DateFormat("yyyy-MM-dd").format(DateTime.now()),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return '방문 일자를 입력해주세요';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.numberWithOptions(
+                      decimal: true, signed: true),
                 ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return '방문 일자를 입력해주세요';
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.numberWithOptions(
-                    decimal: true, signed: true),
-              )),
+              )
+            ]),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+            child: Row(children: <Widget>[
+              Container(
+                width: 100,
+                child: Text("방문자 이름"),
+              ),
+              Container(
+                  width: 200,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '방문자 이름을 입력해주세요.';
+                      }
+                      return null;
+                    },
+                  ))
+            ]),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+            child: Row(children: <Widget>[
+              Container(
+                width: 100,
+                child: Text("방문자 소속"),
+              ),
+              Container(
+                  width: 200,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '방문자 소속을 입력해주세요.';
+                      }
+                      return null;
+                    },
+                  ))
+            ]),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+            child: Row(children: <Widget>[
+              Container(
+                width: 100,
+                child: Text("방문 목적"),
+              ),
+              Container(
+                  width: 200,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '방문 목적을 입력해주세요.';
+                      }
+                      return null;
+                    },
+                  ))
+            ]),
+          ),
           Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-              child: TextFormField(
-                decoration: InputDecoration(labelText: "방문자 이름"),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return '방문자 이름을 입력해주세요.';
-                  }
-                  return null;
-                },
-              )),
-          Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-              child: TextFormField(
-                decoration: InputDecoration(labelText: "방문자 소속"),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return '방문자 소속을 입력해주세요.';
-                  }
-                  return null;
-                },
-              )),
-          Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-              child: TextFormField(
-                decoration: InputDecoration(labelText: "방문 목적"),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return '방문 목적을 입력해주세요.';
-                  }
-                  return null;
-                },
-              )),
-          Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-              child: TextFormField(
-                decoration: InputDecoration(labelText: "접견자 이름"),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return '접견자 이름을 입력해주세요.';
-                  }
-                  return null;
-                },
-              )),
+              child: Row(children: <Widget>[
+                Container(
+                  width: 100,
+                  child: Text("접견자 이름"),
+                ),
+                Container(
+                    width: 200,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return '접견자 이름을 입력해주세요.';
+                        }
+                        return null;
+                      },
+                    ))
+              ])),
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
