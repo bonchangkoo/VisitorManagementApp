@@ -4,15 +4,18 @@ import 'package:intl/intl.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     final appTitle = 'DHK 방문자 관리';
 
     return MaterialApp(
       title: appTitle,
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text(appTitle),
+          backgroundColor: Colors.red[600],
         ),
         body: MyCustomForm(),
       ),
