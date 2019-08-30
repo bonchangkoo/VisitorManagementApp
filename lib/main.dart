@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,63 +47,74 @@ class MyCustomFormState extends State<MyCustomForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                  labelText: "방문자 이름"
-              ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return '방문자 이름을 입력해주세요.';
-                }
-                return null;
-              },
-            )
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
               child: TextFormField(
+                initialValue:
+                    new DateFormat("yyyy-MM-dd").format(new DateTime.now()),
                 decoration: InputDecoration(
-                    labelText: "방문자 소속"
+                  labelText: "방문 일자",
                 ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return '방문 일자를 입력해주세요';
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.numberWithOptions(
+                    decimal: true, signed: true),
+              )),
+          Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+              child: TextFormField(
+                decoration: InputDecoration(labelText: "방문자 이름"),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return '방문자 이름을 입력해주세요.';
+                  }
+                  return null;
+                },
+              )),
+          Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+              child: TextFormField(
+                decoration: InputDecoration(labelText: "방문자 소속"),
                 validator: (value) {
                   if (value.isEmpty) {
                     return '방문자 소속을 입력해주세요.';
                   }
                   return null;
                 },
-              )
-          ),
+              )),
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
               child: TextFormField(
-                decoration: InputDecoration(
-                    labelText: "방문 목적"
-                ),
+                decoration: InputDecoration(labelText: "방문 목적"),
                 validator: (value) {
                   if (value.isEmpty) {
                     return '방문 목적을 입력해주세요.';
                   }
                   return null;
                 },
-              )
-          ),
+              )),
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
               child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: "접견자 이름"
-                ),
+                decoration: InputDecoration(labelText: "접견자 이름"),
                 validator: (value) {
                   if (value.isEmpty) {
                     return '접견자 이름을 입력해주세요.';
                   }
                   return null;
                 },
-              )
-          ),
+              )),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: RaisedButton(
               onPressed: () {
                 // Validate returns true if the form is valid, or false
