@@ -5,7 +5,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'Form Validation Demo';
+    final appTitle = 'DHK 방문자 관리';
 
     return MaterialApp(
       title: appTitle,
