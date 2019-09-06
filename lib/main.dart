@@ -55,7 +55,7 @@ class MyCustomFormState extends State<MyCustomForm> {
     '법무실',
     '홍보실',
     '플라이하이TF본부',
-    '푸드플라'
+    '푸드플라이'
   ];
 
   @override
@@ -117,7 +117,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                     const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                 child: Row(
                   children: <Widget>[
-                    Text("방문자 소속"),
+                    Container(
+                      width: 100,
+                      child: Text("방문자 소속"),
+                    ),
                     Expanded(
                       child: DropdownButton<String>(
                         value: dropdownValue,
@@ -131,6 +134,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox(
+                              width: 300,
                               child: Text(value, textAlign: TextAlign.center),
                             ),
                           );
