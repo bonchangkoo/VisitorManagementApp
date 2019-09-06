@@ -12,13 +12,16 @@ class MyApp extends StatelessWidget {
       title: appTitle,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.red[600],
+        primaryColor: Color(0xFFD61F26),
         accentColor: Colors.white,
       ),
       home: Scaffold(
         appBar: AppBar(
           title: Text(appTitle),
-          leading: Icon(Icons.device_hub),
+          leading: IconButton(
+              padding: const EdgeInsets.only(left: 15.0),
+              icon: Image.asset('images/delivery_hero_logo.png')
+          ),
         ),
         body: MyCustomForm(),
       ),
