@@ -166,8 +166,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                         residenceTimeItems.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: SizedBox(
-                              width: 300,
+                            child: SizedBox.expand(
                               child: Text(value, textAlign: TextAlign.center),
                             ),
                           );
