@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +11,6 @@ final appTitle = 'DHK 방문자 관리';
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: appTitle,
       debugShowCheckedModeBanner: false,
@@ -34,7 +34,6 @@ class Splash extends StatefulWidget {
 }
 
 class SplashState extends State<Splash> {
-
   @override
   Widget build(BuildContext context) {
     return new SplashScreen(
@@ -44,12 +43,12 @@ class SplashState extends State<Splash> {
           title: Text(appTitle),
           leading: IconButton(
               padding: const EdgeInsets.only(left: 15.0),
-              icon: Image.asset('images/delivery_hero_logo.png')
-          ),
+              icon: Image.asset('images/delivery_hero_logo.png')),
         ),
         body: new MyCustomForm(),
       ),
-      image: new Image.network('https://deliveryhero.co.kr/public/images/footer_logo.png'),
+      image: new Image.network(
+          'https://deliveryhero.co.kr/public/images/footer_logo.png'),
       backgroundColor: Colors.white,
       loaderColor: Colors.red,
       photoSize: 200.0,
@@ -89,6 +88,7 @@ class MyCustomFormState extends State<MyCustomForm> {
     '플라이하이TF본부',
     '푸드플라이'
   ];
+  final format = DateFormat("yyyy-MM-dd");
 
   String dropDownResidenceTimeValue = "체류 시간을 선택해주세요.";
   var residenceTimeItems = <String>[
@@ -130,18 +130,16 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문 일자"),
                   ),
                   Expanded(
-                      child: TextFormField(
-                        initialValue:
-                        DateFormat("yyyy-MM-dd").format(DateTime.now()),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return '방문 일자를 입력해주세요';
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.numberWithOptions(
-                            decimal: true, signed: true),
-                      ),
+                    child: DateTimeField(
+                      format: format,
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1900),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
+                    ),
                   ),
                 ]),
               ),
@@ -185,34 +183,32 @@ class MyCustomFormState extends State<MyCustomForm> {
                     width: 100,
                     child: Text("방문자 이름"),
                   ),
-                  Expanded(
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return '방문자 이름을 입력해주세요.';
-                          }
-                          return null;
-                        },
-                      ))
+                  Expanded(child: TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '방문자 이름을 입력해주세요.';
+                      }
+                      return null;
+                    },
+                  )),
                 ]),
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                 child: Row(children: <Widget>[
                   Container(
                     width: 100,
                     child: Text("방문자 소속"),
                   ),
-                  Expanded(
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return '방문자 소속을 입력해주세요.';
-                          }
-                          return null;
-                        },
-                      ))
+                  Expanded(child: TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return '방문자 소속을 입력해주세요.';
+                      }
+                      return null;
+                    },
+                  ))
                 ]),
               ),
               Padding(
@@ -287,15 +283,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                       width: 100,
                       child: Text("접견자 이름"),
                     ),
-                    Expanded(
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return '접견자 이름을 입력해주세요.';
-                            }
-                            return null;
-                          },
-                        ))
+                    Expanded(child: TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return '접견자 이름을 입력해주세요.';
+                        }
+                        return null;
+                      },
+                    ))
                   ])),
 
               Padding(
