@@ -147,6 +147,39 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
               Padding(
                 padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 100,
+                      child: Text("체류 시간"),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        value: dropDownResidenceTimeValue,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropDownResidenceTimeValue = newValue;
+                          });
+                        },
+                        items:
+                        residenceTimeItems.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: SizedBox(
+                              width: 300,
+                              child: Text(value, textAlign: TextAlign.center),
+                            ),
+                          );
+                        }).toList(),
+                        isExpanded: true,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
                     const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                 child: Row(children: <Widget>[
                   Container(
@@ -190,18 +223,18 @@ class MyCustomFormState extends State<MyCustomForm> {
                   children: <Widget>[
                     Container(
                       width: 100,
-                      child: Text("방문 본부"),
+                      child: Text("방문 목적"),
                     ),
                     Expanded(
                       child: DropdownButton<String>(
-                        value: visitDropdownValue,
+                        value: purposeDropdownValue,
                         onChanged: (String newValue) {
                           setState(() {
-                            visitDropdownValue = newValue;
+                            purposeDropdownValue = newValue;
                           });
                         },
                         items:
-                        visitItems.map<DropdownMenuItem<String>>((String value) {
+                        purposeItems.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox.expand(
@@ -222,18 +255,18 @@ class MyCustomFormState extends State<MyCustomForm> {
                   children: <Widget>[
                     Container(
                       width: 100,
-                      child: Text("방문 목적"),
+                      child: Text("방문 본부"),
                     ),
                     Expanded(
                       child: DropdownButton<String>(
-                        value: purposeDropdownValue,
+                        value: visitDropdownValue,
                         onChanged: (String newValue) {
                           setState(() {
-                            purposeDropdownValue = newValue;
+                            visitDropdownValue = newValue;
                           });
                         },
                         items:
-                        purposeItems.map<DropdownMenuItem<String>>((String value) {
+                        visitItems.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox.expand(
@@ -265,39 +298,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                           },
                         ))
                   ])),
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      width: 100,
-                      child: Text("체류 시간"),
-                    ),
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: dropDownResidenceTimeValue,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropDownResidenceTimeValue = newValue;
-                          });
-                        },
-                        items:
-                        residenceTimeItems.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: SizedBox(
-                              width: 300,
-                              child: Text(value, textAlign: TextAlign.center),
-                            ),
-                          );
-                        }).toList(),
-                        isExpanded: true,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 16.0, horizontal: 16.0),
