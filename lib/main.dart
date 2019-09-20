@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,9 +46,10 @@ class MyCustomFormState extends State<MyCustomForm> {
   //
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
-  String dropdownValue = '재무본부';
   final _formKey = GlobalKey<FormState>();
+  String dropdownValue = "방문 본부를 선택해주세요.";
   var items = <String>[
+    '방문 본부를 선택해주세요.',
     '재무본부',
     '전략본부',
     '기술연구소',
@@ -120,7 +122,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   children: <Widget>[
                     Container(
                       width: 100,
-                      child: Text("방문자 소속"),
+                      child: Text("방문 본부"),
                     ),
                     Expanded(
                       child: DropdownButton<String>(
@@ -190,7 +192,18 @@ class MyCustomFormState extends State<MyCustomForm> {
                   onPressed: () {
                     // Validate returns true if the form is valid, or false
                     // otherwise.
-                    if (_formKey.currentState.validate()) {
+                    if (dropdownValue == items[0]) {
+                      Fluttertoast.showToast(
+                          msg: dropdownValue,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+
+                    } else if (_formKey.currentState.validate()) {
                       // If the form is valid, display a Snackbar.
                       Scaffold.of(context)
                           .showSnackBar(SnackBar(content: Text('제출하는 중입니다.')));
