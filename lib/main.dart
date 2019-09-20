@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: appTitle,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.red[600],
+        primaryColor: Color(0xFFD61F26),
         accentColor: Colors.white,
       ),
       routes: routes,
@@ -38,6 +38,13 @@ class SplashState extends State<Splash> {
     return new SplashScreen(
       seconds: 10,
       navigateAfterSeconds: new Scaffold(
+        appBar: AppBar(
+          title: Text(appTitle),
+          leading: IconButton(
+              padding: const EdgeInsets.only(left: 15.0),
+              icon: Image.asset('images/delivery_hero_logo.png')
+          ),
+        ),
         body: new MyCustomForm(),
       ),
       image: new Image.network('https://deliveryhero.co.kr/public/images/footer_logo.png'),
@@ -97,21 +104,20 @@ class MyCustomFormState extends State<MyCustomForm> {
                     width: 100,
                     child: Text("방문 일자"),
                   ),
-                  Container(
-                    width: 200,
-                    child: TextFormField(
-                      initialValue:
-                          DateFormat("yyyy-MM-dd").format(DateTime.now()),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return '방문 일자를 입력해주세요';
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.numberWithOptions(
-                          decimal: true, signed: true),
-                    ),
-                  )
+                  Expanded(
+                      child: TextFormField(
+                        initialValue:
+                        DateFormat("yyyy-MM-dd").format(DateTime.now()),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return '방문 일자를 입력해주세요';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.numberWithOptions(
+                            decimal: true, signed: true),
+                      ),
+                  ),
                 ]),
               ),
               Padding(
@@ -122,8 +128,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     width: 100,
                     child: Text("방문자 이름"),
                   ),
-                  Container(
-                      width: 200,
+                  Expanded(
                       child: TextFormField(
                         validator: (value) {
                           if (value.isEmpty) {
@@ -171,8 +176,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     width: 100,
                     child: Text("방문 목적"),
                   ),
-                  Container(
-                      width: 200,
+                  Expanded(
                       child: TextFormField(
                         validator: (value) {
                           if (value.isEmpty) {
@@ -191,8 +195,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                       width: 100,
                       child: Text("접견자 이름"),
                     ),
-                    Container(
-                        width: 200,
+                    Expanded(
                         child: TextFormField(
                           validator: (value) {
                             if (value.isEmpty) {
