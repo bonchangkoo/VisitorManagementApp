@@ -248,25 +248,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-                child: Row(children: <Widget>[
-                  Container(
-                    width: 100,
-                    child: Text("방문 목적"),
-                  ),
-                  Expanded(
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return '방문 목적을 입력해주세요.';
-                          }
-                          return null;
-                        },
-                      ))
-                ]),
-              ),
-              Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 4.0, horizontal: 16.0),
                   child: Row(children: <Widget>[
