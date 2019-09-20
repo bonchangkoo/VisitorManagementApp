@@ -90,6 +90,19 @@ class MyCustomFormState extends State<MyCustomForm> {
     '푸드플라이'
   ];
 
+  String dropDownResidenceTimeValue = "체류 시간을 선택해주세요.";
+  var residenceTimeItems = <String>[
+    '체류 시간을 선택해주세요.',
+    '1시간',
+    '2시간',
+    '3시간',
+    '4시간',
+    '5시간',
+    '6시간',
+    '7시간',
+    '종일'
+  ];
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -232,6 +245,39 @@ class MyCustomFormState extends State<MyCustomForm> {
                         ))
                   ])),
               Padding(
+                padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 100,
+                      child: Text("체류 시간"),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        value: dropDownResidenceTimeValue,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropDownResidenceTimeValue = newValue;
+                          });
+                        },
+                        items:
+                        residenceTimeItems.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: SizedBox(
+                              width: 300,
+                              child: Text(value, textAlign: TextAlign.center),
+                            ),
+                          );
+                        }).toList(),
+                        isExpanded: true,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 16.0, horizontal: 16.0),
                 child: RaisedButton(
@@ -248,7 +294,16 @@ class MyCustomFormState extends State<MyCustomForm> {
                           textColor: Colors.white,
                           fontSize: 16.0
                       );
-
+                    } else if(dropDownResidenceTimeValue == residenceTimeItems[0]) {
+                      Fluttertoast.showToast(
+                          msg: dropDownResidenceTimeValue,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
                     } else if (_formKey.currentState.validate()) {
                       // If the form is valid, display a Snackbar.
                       Scaffold.of(context)
