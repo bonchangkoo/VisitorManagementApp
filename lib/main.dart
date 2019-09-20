@@ -141,15 +141,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                       },
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/calendar');
-                      },
-                      child: Text('선택'),
-                    ),
-                  ),
                 ]),
               ),
               Padding(
