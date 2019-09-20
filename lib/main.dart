@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:splashscreen/splashscreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(MyApp());
 
+final appTitle = 'DHK 방문자 관리';
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'DHK 방문자 관리';
 
     return MaterialApp(
       title: appTitle,
@@ -16,7 +18,28 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFFD61F26),
         accentColor: Colors.white,
       ),
-      home: Scaffold(
+      routes: routes,
+    );
+  }
+}
+
+final routes = {
+  '/': (BuildContext context) => new Splash(),
+  '/form': (BuildContext context) => new MyCustomForm()
+};
+
+class Splash extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => new SplashState();
+}
+
+class SplashState extends State<Splash> {
+
+  @override
+  Widget build(BuildContext context) {
+    return new SplashScreen(
+      seconds: 10,
+      navigateAfterSeconds: new Scaffold(
         appBar: AppBar(
           title: Text(appTitle),
           leading: IconButton(
@@ -24,8 +47,12 @@ class MyApp extends StatelessWidget {
               icon: Image.asset('images/delivery_hero_logo.png')
           ),
         ),
-        body: MyCustomForm(),
+        body: new MyCustomForm(),
       ),
+      image: new Image.network('https://deliveryhero.co.kr/public/images/footer_logo.png'),
+      backgroundColor: Colors.white,
+      loaderColor: Colors.red,
+      photoSize: 200.0,
     );
   }
 }
@@ -109,6 +136,25 @@ class MyCustomFormState extends State<MyCustomForm> {
                         validator: (value) {
                           if (value.isEmpty) {
                             return '방문자 이름을 입력해주세요.';
+                          }
+                          return null;
+                        },
+                      ))
+                ]),
+              ),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                child: Row(children: <Widget>[
+                  Container(
+                    width: 100,
+                    child: Text("방문자 소속"),
+                  ),
+                  Expanded(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return '방문자 소속을 입력해주세요.';
                           }
                           return null;
                         },
