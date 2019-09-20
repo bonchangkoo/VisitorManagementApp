@@ -38,7 +38,7 @@ class SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return new SplashScreen(
-      seconds: 10,
+      seconds: 1,
       navigateAfterSeconds: new Scaffold(
         appBar: AppBar(
           title: Text(appTitle),
@@ -74,8 +74,8 @@ class MyCustomFormState extends State<MyCustomForm> {
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
-  String dropdownValue = "방문 본부를 선택해주세요.";
-  var items = <String>[
+  String visitDropdownValue = "방문 본부를 선택해주세요.";
+  var visitItems = <String>[
     '방문 본부를 선택해주세요.',
     '재무본부',
     '전략본부',
@@ -101,6 +101,15 @@ class MyCustomFormState extends State<MyCustomForm> {
     '6시간',
     '7시간',
     '종일'
+  ];
+
+  String purposeDropdownValue = "방문 목적을 선택해주세요.";
+  var purposeItems = <String>[
+    '방문 목적을 선택해주세요.',
+    '시스템 검',
+    '업체미팅',
+    '자사직원손님',
+    '면접'
   ];
 
   @override
@@ -176,7 +185,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -185,18 +194,49 @@ class MyCustomFormState extends State<MyCustomForm> {
                     ),
                     Expanded(
                       child: DropdownButton<String>(
-                        value: dropdownValue,
+                        value: visitDropdownValue,
                         onChanged: (String newValue) {
                           setState(() {
-                            dropdownValue = newValue;
+                            visitDropdownValue = newValue;
                           });
                         },
                         items:
-                            items.map<DropdownMenuItem<String>>((String value) {
+                        visitItems.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: SizedBox(
-                              width: 300,
+                            child: SizedBox.expand(
+                              child: Text(value, textAlign: TextAlign.center),
+                            ),
+                          );
+                        }).toList(),
+                        isExpanded: true,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 100,
+                      child: Text("방문 목적"),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        value: purposeDropdownValue,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            purposeDropdownValue = newValue;
+                          });
+                        },
+                        items:
+                        purposeItems.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: SizedBox.expand(
                               child: Text(value, textAlign: TextAlign.center),
                             ),
                           );
@@ -284,26 +324,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                   onPressed: () {
                     // Validate returns true if the form is valid, or false
                     // otherwise.
-                    if (dropdownValue == items[0]) {
-                      Fluttertoast.showToast(
-                          msg: dropdownValue,
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIos: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
-                    } else if(dropDownResidenceTimeValue == residenceTimeItems[0]) {
-                      Fluttertoast.showToast(
-                          msg: dropDownResidenceTimeValue,
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIos: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
+                    if (visitDropdownValue == visitItems[0]) {
+                      toast(visitDropdownValue);
+                    } else if (purposeDropdownValue == purposeItems[0]) {
+                      toast(purposeDropdownValue);
+                    } else if (dropDownResidenceTimeValue == residenceTimeItems[0]) {
+                      toast(dropDownResidenceTimeValue);
                     } else if (_formKey.currentState.validate()) {
                       // If the form is valid, display a Snackbar.
                       Scaffold.of(context)
@@ -316,5 +342,17 @@ class MyCustomFormState extends State<MyCustomForm> {
             ],
           ),
         ));
+  }
+
+  void toast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
   }
 }
