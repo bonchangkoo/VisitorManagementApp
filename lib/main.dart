@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 void main() => runApp(MyApp());
 
@@ -112,6 +111,21 @@ class MyCustomFormState extends State<MyCustomForm> {
     '면접'
   ];
 
+  DateTime selectedDate = DateTime.now();
+
+  Future selectDate() async {
+    DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2016),
+        lastDate: DateTime.now()
+    );
+    if(picked != null) setState(() {
+      print("wowow" + picked.toString());
+      selectedDate = picked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -130,17 +144,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문 일자"),
                   ),
                   Expanded(
-                    child: DateTimeField(
-                      format: format,
-                      onShowPicker: (context, currentValue) {
-                        return showDatePicker(
-                            context: context,
-                            firstDate: DateTime(1900),
-                            initialDate: currentValue ?? DateTime.now(),
-                            lastDate: DateTime(2100));
-                      },
-                    ),
+                    child: Text("${selectedDate.toLocal()}"),
                   ),
+                  new RaisedButton(onPressed: selectDate, child: new Text('Click me'),)
                 ]),
               ),
               Padding(
