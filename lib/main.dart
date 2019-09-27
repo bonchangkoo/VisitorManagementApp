@@ -292,11 +292,21 @@ class MyCustomFormState extends State<MyCustomForm> {
                       },
                     ))
                   ])),
-
-              Padding(
+              SizedBox(
+                height: 30.0,
+              ),
+              Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 16.0, horizontal: 16.0),
+                width: double.infinity,
                 child: RaisedButton(
+                  child: Text(
+                    "제출하기",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  padding: EdgeInsets.all(12.0),
+                  shape: StadiumBorder(),
+                  color: Colors.red,
                   onPressed: () {
                     // Validate returns true if the form is valid, or false
                     // otherwise.
@@ -312,7 +322,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                           .showSnackBar(SnackBar(content: Text('제출하는 중입니다.')));
                     }
                   },
-                  child: Text('제출하기'),
                 ),
               ),
             ],
