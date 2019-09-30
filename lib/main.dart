@@ -3,6 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import 'bloc/google_sheet_controller.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,22 +33,42 @@ final routes = {
 
 class Splash extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new SplashState();
+  State<StatefulWidget> createState() => SplashState();
 }
 
 class SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
-    return new SplashScreen(
+    return SplashScreen(
       seconds: 1,
-      navigateAfterSeconds: new Scaffold(
+      navigateAfterSeconds: Scaffold(
         appBar: AppBar(
           title: Text(appTitle),
           leading: IconButton(
               padding: const EdgeInsets.only(left: 15.0),
               icon: Image.asset('images/delivery_hero_logo.png')),
         ),
-        body: new MyCustomForm(),
+        body: StreamBuilder<String>(
+          stream: GoogleSheetController.INSTANCE.urlStream,
+          builder: (context, snapshot) {
+            if (snapshot.data == null)
+              return MyCustomForm();
+            else
+              return WebView(
+                initialUrl: snapshot.data,
+                userAgent: 'Chrome/56.0.0.0 Mobile',
+                javascriptMode: JavascriptMode.unrestricted,
+                navigationDelegate: (request) {
+                  if (request.url.startsWith('https://accounts.google.com/o/oauth2/approval?as=')) {
+                    setState(() {});
+                  }
+                },
+                onPageFinished: (url) {
+                  print('onPageFinished $url');
+                },
+              );
+          }
+        ),
       ),
       image: new Image.network(
           'https://deliveryhero.co.kr/public/images/footer_logo.png'),

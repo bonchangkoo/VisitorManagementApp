@@ -5,13 +5,13 @@ class SheetApiClient {
   bool isInitialized = false;
 
   SheetApiClient(SheetApiParam param) {
-    try {
-      googleSheetApiNative.invokeMethod("setup", param).then((result) {
-        isInitialized = true;
-      });
-    } on PlatformException catch(e) {
-      print("@## GoogleSheetApi Setup Failed\n${e.message}");
-    }
+//    try {
+//      googleSheetApiNative.invokeMethod("setup", param).then((result) {
+//        isInitialized = true;
+//      });
+//    } on PlatformException catch(e) {
+//      print("@## GoogleSheetApi Setup Failed\n${e.message}");
+//    }
   }
 
   void write(Record record) {
