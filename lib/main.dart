@@ -95,6 +95,12 @@ class MyCustomFormState extends State<MyCustomForm> {
   //
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
+
+  final _visitDateController = TextEditingController();
+  final _visitorNameController = TextEditingController();
+  final _visitorCompanyController = TextEditingController();
+  final _welcomerNameController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   String visitDropdownValue = "방문 본부를 선택해주세요.";
   var visitItems = <String>[
@@ -154,6 +160,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   ),
                   Expanded(
                     child: DateTimeField(
+                      controller: _visitDateController,
                       format: format,
                       onShowPicker: (context, currentValue) {
                         return showDatePicker(
@@ -207,6 +214,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문자 이름"),
                   ),
                   Expanded(child: TextFormField(
+                    controller: _visitorNameController,
                     validator: (value) {
                       if (value.isEmpty) {
                         return '방문자 이름을 입력해주세요.';
@@ -225,6 +233,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문자 소속"),
                   ),
                   Expanded(child: TextFormField(
+                    controller: _visitorCompanyController,
                     validator: (value) {
                       if (value.isEmpty) {
                         return '방문자 소속을 입력해주세요.';
@@ -307,6 +316,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                       child: Text("접견자 이름"),
                     ),
                     Expanded(child: TextFormField(
+                      controller: _welcomerNameController,
                       validator: (value) {
                         if (value.isEmpty) {
                           return '접견자 이름을 입력해주세요.';
@@ -341,6 +351,26 @@ class MyCustomFormState extends State<MyCustomForm> {
                       toast(dropDownResidenceTimeValue);
                     } else if (_formKey.currentState.validate()) {
                       // If the form is valid, display a Snackbar.
+
+                      String visitDate = new DateFormat("yyyy.MM.dd").format(
+                          new DateFormat("yyyy-MM-dd").parse(_visitDateController.text)
+                      );
+                      String residenceTime = dropDownResidenceTimeValue;
+                      String visitorName = _visitorNameController.text;
+                      String visitorCompany = _visitorCompanyController.text;
+                      String visitPurpose = purposeDropdownValue;
+                      String visitDepartment = visitDropdownValue;
+                      String welcomerName = _welcomerNameController.text;
+                      
+                      // print test
+                      print(visitDate);
+                      print(residenceTime);
+                      print(visitorName);
+                      print(visitorCompany);
+                      print(visitPurpose);
+                      print(visitDepartment);
+                      print(welcomerName);
+
                       Scaffold.of(context)
                           .showSnackBar(SnackBar(content: Text('제출하는 중입니다.')));
                     }
