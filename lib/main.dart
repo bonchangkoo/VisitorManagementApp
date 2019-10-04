@@ -129,7 +129,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   String purposeDropdownValue = "방문 목적을 선택해주세요.";
   var purposeItems = <String>[
     '방문 목적을 선택해주세요.',
-    '시스템 검',
+    '시스템 점검',
     '업체미팅',
     '자사직원손님',
     '면접'
