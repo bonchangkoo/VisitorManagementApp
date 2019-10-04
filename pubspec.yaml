@@ -30,6 +30,8 @@ dependencies:
   googleapis: any
   googleapis_auth: any
   webview_flutter:
+  url_launcher:
+  flutter_secure_storage:
 
 dev_dependencies:
   flutter_test:
