@@ -141,20 +141,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   ];
 
   DateTime selectedDate = DateTime.now();
-  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-
-  Future selectDate() async {
-    DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2016),
-        lastDate: DateTime.now()
-    );
-    if(picked != null) setState(() {
-      print("wowow" + picked.toString());
-      selectedDate = picked;
-    });
-  }
+  TextEditingController dateCtl = TextEditingController(text: DateFormat("yyyy-MM-dd").format(DateTime.now()));
 
   @override
   Widget build(BuildContext context) {
@@ -174,9 +161,21 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문 일자"),
                   ),
                   Expanded(
-                    child: InkWell(
-                      onTap: () => selectDate(),
-                      child: Text("${dateFormat.format(selectedDate.toLocal())}"),
+                    child: TextFormField(
+                      controller: dateCtl,
+                      decoration: InputDecoration(),
+                      onTap: () async {
+                        FocusScope.of(context).requestFocus(new FocusNode());
+
+                        selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2016),
+                            lastDate: DateTime.now()
+                        );
+
+                        dateCtl.text = format.format(selectedDate);
+                      },
                     ),
                   ),
                 ]),
