@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import 'bloc/google_sheet_controller.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xFFD61F26),
-        accentColor: Colors.white,
+        accentColor: Colors.deepOrange,
       ),
       routes: routes,
     );
@@ -29,22 +32,42 @@ final routes = {
 
 class Splash extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new SplashState();
+  State<StatefulWidget> createState() => SplashState();
 }
 
 class SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
-    return new SplashScreen(
+    return SplashScreen(
       seconds: 1,
-      navigateAfterSeconds: new Scaffold(
+      navigateAfterSeconds: Scaffold(
         appBar: AppBar(
           title: Text(appTitle),
           leading: IconButton(
               padding: const EdgeInsets.only(left: 15.0),
               icon: Image.asset('images/delivery_hero_logo.png')),
         ),
-        body: new MyCustomForm(),
+        body: StreamBuilder<String>(
+          stream: GoogleSheetController.INSTANCE.urlStream,
+          builder: (context, snapshot) {
+            if (snapshot.data == null)
+              return MyCustomForm();
+            else
+              return WebView(
+                initialUrl: snapshot.data,
+                userAgent: 'Chrome/56.0.0.0 Mobile',
+                javascriptMode: JavascriptMode.unrestricted,
+                navigationDelegate: (request) {
+                  if (request.url.startsWith('https://accounts.google.com/o/oauth2/approval?as=')) {
+                    setState(() {});
+                  }
+                },
+                onPageFinished: (url) {
+                  print('onPageFinished $url');
+                },
+              );
+          }
+        ),
       ),
       image: new Image.network(
           'https://deliveryhero.co.kr/public/images/footer_logo.png'),
@@ -71,6 +94,12 @@ class MyCustomFormState extends State<MyCustomForm> {
   //
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
+
+  final _visitDateController = TextEditingController();
+  final _visitorNameController = TextEditingController();
+  final _visitorCompanyController = TextEditingController();
+  final _welcomerNameController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   String visitDropdownValue = "방문 본부를 선택해주세요.";
   var visitItems = <String>[
@@ -105,7 +134,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   String purposeDropdownValue = "방문 목적을 선택해주세요.";
   var purposeItems = <String>[
     '방문 목적을 선택해주세요.',
-    '시스템 검',
+    '시스템 점검',
     '업체미팅',
     '자사직원손님',
     '면접'
@@ -190,6 +219,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문자 이름"),
                   ),
                   Expanded(child: TextFormField(
+                    controller: _visitorNameController,
                     validator: (value) {
                       if (value.isEmpty) {
                         return '방문자 이름을 입력해주세요.';
@@ -208,6 +238,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문자 소속"),
                   ),
                   Expanded(child: TextFormField(
+                    controller: _visitorCompanyController,
                     validator: (value) {
                       if (value.isEmpty) {
                         return '방문자 소속을 입력해주세요.';
@@ -290,6 +321,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                       child: Text("접견자 이름"),
                     ),
                     Expanded(child: TextFormField(
+                      controller: _welcomerNameController,
                       validator: (value) {
                         if (value.isEmpty) {
                           return '접견자 이름을 입력해주세요.';
@@ -298,11 +330,21 @@ class MyCustomFormState extends State<MyCustomForm> {
                       },
                     ))
                   ])),
-
-              Padding(
+              SizedBox(
+                height: 30.0,
+              ),
+              Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 16.0, horizontal: 16.0),
+                width: double.infinity,
                 child: RaisedButton(
+                  child: Text(
+                    "제출하기",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  padding: EdgeInsets.all(12.0),
+                  shape: StadiumBorder(),
+                  color: Colors.red,
                   onPressed: () {
                     // Validate returns true if the form is valid, or false
                     // otherwise.
@@ -314,11 +356,30 @@ class MyCustomFormState extends State<MyCustomForm> {
                       toast(dropDownResidenceTimeValue);
                     } else if (_formKey.currentState.validate()) {
                       // If the form is valid, display a Snackbar.
+
+                      String visitDate = new DateFormat("yyyy.MM.dd").format(
+                          new DateFormat("yyyy-MM-dd").parse(_visitDateController.text)
+                      );
+                      String residenceTime = dropDownResidenceTimeValue;
+                      String visitorName = _visitorNameController.text;
+                      String visitorCompany = _visitorCompanyController.text;
+                      String visitPurpose = purposeDropdownValue;
+                      String visitDepartment = visitDropdownValue;
+                      String welcomerName = _welcomerNameController.text;
+
+                      // print test
+                      print(visitDate);
+                      print(residenceTime);
+                      print(visitorName);
+                      print(visitorCompany);
+                      print(visitPurpose);
+                      print(visitDepartment);
+                      print(welcomerName);
+
                       Scaffold.of(context)
                           .showSnackBar(SnackBar(content: Text('제출하는 중입니다.')));
                     }
                   },
-                  child: Text('제출하기'),
                 ),
               ),
             ],
