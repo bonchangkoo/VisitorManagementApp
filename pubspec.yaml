@@ -32,6 +32,7 @@ dependencies:
   webview_flutter:
   url_launcher:
   flutter_secure_storage:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
