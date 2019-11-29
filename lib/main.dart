@@ -361,7 +361,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                       String visitPurpose = purposeDropdownValue;
                       String visitDepartment = visitDropdownValue;
                       String welcomerName = _welcomerNameController.text;
-                      
+
+                      GoogleSheetController.INSTANCE.requestSheetInfo(visitDate, residenceTime, visitorName, visitorCompany, visitPurpose, visitDepartment, welcomerName);
+
                       // print test
                       print(visitDate);
                       print(residenceTime);

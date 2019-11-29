@@ -36,12 +36,23 @@ class GoogleSheetController {
   }
 
 
-  void requestSheetInfo() async {
+  void requestSheetInfo(String visitDate, String residenceTime, String visitorName, String visitorCompany, String visitPurpose, String visitDepartment, String welcomerName) async {
     http.Client client = await _getAuthClient();
-    Spreadsheet sheet = await SheetsApi(client).spreadsheets.get('1ztkYwM6Kz0F8X-PcksSqStdbMqpvh1B55Wo81nmd5t4');
-    for (Sheet s in sheet.sheets) {
-      print("==> $s.");
-    }
+    SheetsApi api = SheetsApi(client);
+
+    ValueRange vr = new ValueRange.fromJson({
+      "values": [
+        [ // fields A - G
+          visitDate, residenceTime, visitorName, visitorCompany, visitPurpose, visitDepartment, welcomerName
+        ]
+      ]
+    });
+    api.spreadsheets.values
+        .append(vr, '1-opthJwZt8LiYqozGS5TlHE-n_YsDO9T_kzgN9kwMS0', 'A:G',
+        valueInputOption: 'USER_ENTERED')
+        .then((AppendValuesResponse r) {
+      print('==> append completed.');
+    });
     client.close();
   }
 
