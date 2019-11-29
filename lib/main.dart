@@ -163,7 +163,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Expanded(
                     child: TextFormField(
                       controller: dateCtl,
-                      decoration: InputDecoration(),
                       onTap: () async {
                         FocusScope.of(context).requestFocus(new FocusNode());
 
