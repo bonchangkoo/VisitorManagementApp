@@ -6,7 +6,6 @@ import 'main.dart' as Constants;
 class InputSpreadSheetUrl extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _spreadSheetUrlController = TextEditingController();
-  SharedPreferences _prefs;
 
   void putSpreadSheetKey(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
