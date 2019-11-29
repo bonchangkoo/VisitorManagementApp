@@ -141,6 +141,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   ];
 
   DateTime selectedDate = DateTime.now();
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   Future selectDate() async {
     DateTime picked = await showDatePicker(
@@ -173,9 +174,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문 일자"),
                   ),
                   Expanded(
-                    child: Text("${selectedDate.toLocal()}"),
+                    child: InkWell(
+                      onTap: () => selectDate(),
+                      child: Text("${dateFormat.format(selectedDate.toLocal())}"),
+                    ),
                   ),
-                  new RaisedButton(onPressed: selectDate, child: new Text('Click me'),)
                 ]),
               ),
               Padding(
