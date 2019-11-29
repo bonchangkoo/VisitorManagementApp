@@ -74,14 +74,15 @@ class InputSpreadSheetUrl extends StatelessWidget {
                         if (i + 2 < pathSegments.length && pathSegments[i + 2].contains("edit")) {
                           key = pathSegments[i +1];
                           putSpreadSheetKey(key);
-                          Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => Constants.MyCustomForm()
-                          ));
                         }
                       }
                     }
                     if (key == null) {
                       toast("Spread Sheet Url이 정상적이지 않습니다.");
+                    } else {
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) => Constants.MyCustomForm()
+                      ));
                     }
                   }
                 },
