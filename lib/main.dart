@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'bloc/google_sheet_controller.dart';
@@ -141,6 +140,9 @@ class MyCustomFormState extends State<MyCustomForm> {
     '면접'
   ];
 
+  DateTime selectedDate = DateTime.now();
+  TextEditingController dateCtl = TextEditingController(text: DateFormat("yyyy-MM-dd").format(DateTime.now()));
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -159,15 +161,19 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text("방문 일자"),
                   ),
                   Expanded(
-                    child: DateTimeField(
-                      controller: _visitDateController,
-                      format: format,
-                      onShowPicker: (context, currentValue) {
-                        return showDatePicker(
+                    child: TextFormField(
+                      controller: dateCtl,
+                      onTap: () async {
+                        FocusScope.of(context).requestFocus(new FocusNode());
+
+                        selectedDate = await showDatePicker(
                             context: context,
-                            firstDate: DateTime(1900),
-                            initialDate: currentValue ?? DateTime.now(),
-                            lastDate: DateTime(2100));
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2016),
+                            lastDate: DateTime.now()
+                        );
+
+                        dateCtl.text = format.format(selectedDate);
                       },
                     ),
                   ),
