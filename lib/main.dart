@@ -1,14 +1,18 @@
+library Constants;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
+import 'package:dhk_visitor_management_app/InputSpreadSheetUrl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc/google_sheet_controller.dart';
 
 void main() => runApp(MyApp());
 
 final appTitle = 'DHK 방문자 관리';
+
+const String spreadSheetKey = 'spreadSheetKey';
 
 class MyApp extends StatelessWidget {
   @override
@@ -27,7 +31,8 @@ class MyApp extends StatelessWidget {
 
 final routes = {
   '/': (BuildContext context) => new Splash(),
-  '/form': (BuildContext context) => new MyCustomForm()
+  '/form': (BuildContext context) => new MyCustomForm(),
+  '/spread_sheet': (BuildContext context) => new InputSpreadSheetUrl()
 };
 
 class Splash extends StatefulWidget {
@@ -48,26 +53,36 @@ class SplashState extends State<Splash> {
               icon: Image.asset('images/delivery_hero_logo.png')),
         ),
         body: StreamBuilder<String>(
-          stream: GoogleSheetController.INSTANCE.urlStream,
-          builder: (context, snapshot) {
-            if (snapshot.data == null)
-              return MyCustomForm();
-            else
-              return WebView(
-                initialUrl: snapshot.data,
-                userAgent: 'Chrome/56.0.0.0 Mobile',
-                javascriptMode: JavascriptMode.unrestricted,
-                navigationDelegate: (request) {
-                  if (request.url.startsWith('https://accounts.google.com/o/oauth2/approval?as=')) {
-                    setState(() {});
-                  }
-                },
-                onPageFinished: (url) {
-                  print('onPageFinished $url');
-                },
-              );
-          }
-        ),
+            stream: GoogleSheetController.INSTANCE.urlStream,
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return FutureBuilder<String>(
+                  future: getSpreadSheetKey(),
+                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.data != null) {
+                      return MyCustomForm();
+                    } else {
+                      return InputSpreadSheetUrl();
+                    }
+                  },
+                );
+              }
+              else
+                return WebView(
+                  initialUrl: snapshot.data,
+                  userAgent: 'Chrome/56.0.0.0 Mobile',
+                  javascriptMode: JavascriptMode.unrestricted,
+                  navigationDelegate: (request) {
+                    if (request.url.startsWith(
+                        'https://accounts.google.com/o/oauth2/approval?as=')) {
+                      setState(() {});
+                    }
+                  },
+                  onPageFinished: (url) {
+                    print('onPageFinished $url');
+                  },
+                );
+            }),
       ),
       image: new Image.network(
           'https://deliveryhero.co.kr/public/images/footer_logo.png'),
@@ -75,6 +90,11 @@ class SplashState extends State<Splash> {
       loaderColor: Colors.red,
       photoSize: 200.0,
     );
+  }
+
+  Future<String> getSpreadSheetKey() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(spreadSheetKey);
   }
 }
 
@@ -181,7 +201,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -196,8 +216,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                             dropDownResidenceTimeValue = newValue;
                           });
                         },
-                        items:
-                        residenceTimeItems.map<DropdownMenuItem<String>>((String value) {
+                        items: residenceTimeItems
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox.expand(
@@ -251,7 +271,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -266,8 +286,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                             purposeDropdownValue = newValue;
                           });
                         },
-                        items:
-                        purposeItems.map<DropdownMenuItem<String>>((String value) {
+                        items: purposeItems
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox.expand(
@@ -283,7 +303,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -298,8 +318,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                             visitDropdownValue = newValue;
                           });
                         },
-                        items:
-                        visitItems.map<DropdownMenuItem<String>>((String value) {
+                        items: visitItems
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox.expand(
@@ -353,7 +373,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                       toast(visitDropdownValue);
                     } else if (purposeDropdownValue == purposeItems[0]) {
                       toast(purposeDropdownValue);
-                    } else if (dropDownResidenceTimeValue == residenceTimeItems[0]) {
+                    } else if (dropDownResidenceTimeValue ==
+                        residenceTimeItems[0]) {
                       toast(dropDownResidenceTimeValue);
                     } else if (_formKey.currentState.validate()) {
                       // If the form is valid, display a Snackbar.
@@ -398,7 +419,6 @@ class MyCustomFormState extends State<MyCustomForm> {
         timeInSecForIos: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
   }
 }
